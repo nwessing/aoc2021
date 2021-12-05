@@ -2,9 +2,10 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn solve(file_input: File) -> Result<i32, &'static str> {
+pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
     let mut horizontal = 0;
-    let mut depth = 0;
+    let mut depth_part2 = 0;
+    let mut depth_part1 = 0;
     let mut aim = 0;
 
     let mut reader = BufReader::new(file_input);
@@ -23,13 +24,15 @@ pub fn solve(file_input: File) -> Result<i32, &'static str> {
         match direction {
             "forward" => {
                 horizontal += amount;
-                depth += aim * amount;
+                depth_part2 += aim * amount;
             }
             "down" => {
                 aim += amount;
+                depth_part1 += amount;
             }
             "up" => {
                 aim -= amount;
+                depth_part1 -= amount;
             }
             _ => {
                 panic!("Invalid direction {}", direction);
@@ -39,5 +42,5 @@ pub fn solve(file_input: File) -> Result<i32, &'static str> {
         line.clear();
     }
 
-    Ok(horizontal * depth)
+    Ok((horizontal * depth_part1, horizontal * depth_part2))
 }

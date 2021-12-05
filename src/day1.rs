@@ -2,10 +2,11 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn solve(file_input: File) -> Result<i32, &'static str> {
+pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
     let mut reader = BufReader::new(file_input);
 
-    let mut result = 0;
+    let mut result1 = 0;
+    let mut result2 = 0;
 
     let mut window = [0; 3];
     let mut window_size = 0;
@@ -20,7 +21,11 @@ pub fn solve(file_input: File) -> Result<i32, &'static str> {
         let number =
             i32::from_str_radix(&line.trim(), 10).map_err(|_| "Error parsing string to int")?;
         if window_size == 3 && number + window[2] + window[1] > current_window_value {
-            result += 1;
+            result2 += 1;
+        }
+
+        if window_size > 0 && number > window[2] {
+            result1 += 1;
         }
 
         if window_size < 3 {
@@ -37,5 +42,5 @@ pub fn solve(file_input: File) -> Result<i32, &'static str> {
         line.clear();
     }
 
-    Ok(result)
+    Ok((result1, result2))
 }

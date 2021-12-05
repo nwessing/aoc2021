@@ -1,5 +1,6 @@
 mod day1;
 mod day2;
+mod day3;
 
 use std::env;
 use std::fs::File;
@@ -14,6 +15,7 @@ fn main() -> Result<(), &'static str> {
     let func = match day.as_str() {
         "day1" => day1::solve,
         "day2" => day2::solve,
+        "day3" => day3::solve,
         _ => {
             return Err("Unimplemented day");
         }
@@ -21,14 +23,15 @@ fn main() -> Result<(), &'static str> {
 
     let result = run_day(&day, is_sample, func)?;
 
-    println!("{}", result);
+    println!("Part 1: {}", result.0);
+    println!("Part 2: {}", result.1);
 
     Ok(())
 }
 
-fn run_day<F>(day: &str, is_sample: bool, func: F) -> Result<i32, &'static str>
+fn run_day<F>(day: &str, is_sample: bool, func: F) -> Result<(i32, i32), &'static str>
 where
-    F: Fn(File) -> Result<i32, &'static str>,
+    F: Fn(File) -> Result<(i32, i32), &'static str>,
 {
     let filename = if is_sample {
         format!("input/{}_sample", day)
