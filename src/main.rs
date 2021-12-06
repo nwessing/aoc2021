@@ -1,6 +1,7 @@
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 use std::env;
 use std::fs::File;
@@ -16,6 +17,7 @@ fn main() -> Result<(), &'static str> {
         "day1" => day1::solve,
         "day2" => day2::solve,
         "day3" => day3::solve,
+        "day4" => day4::solve,
         _ => {
             return Err("Unimplemented day");
         }
