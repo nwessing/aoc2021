@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
+pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     let mut horizontal = 0;
     let mut depth_part2 = 0;
     let mut depth_part1 = 0;
@@ -42,5 +42,8 @@ pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
         line.clear();
     }
 
-    Ok((horizontal * depth_part1, horizontal * depth_part2))
+    Ok((
+        (horizontal * depth_part1) as i64,
+        (horizontal * depth_part2) as i64,
+    ))
 }

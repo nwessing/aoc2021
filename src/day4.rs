@@ -91,7 +91,7 @@ impl BingoBoard {
     }
 }
 
-pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
+pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     let mut reader = BufReader::new(file_input);
     let mut line = String::new();
 
@@ -134,5 +134,5 @@ pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
         }
     }
 
-    Ok((part1 as i32, part2 as i32))
+    Ok((part1 as i64, part2 as i64))
 }

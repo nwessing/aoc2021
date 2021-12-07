@@ -8,7 +8,7 @@ enum MostCommon {
     Tie,
 }
 
-pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
+pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     let mut input_count = 0;
     let mut num_bits: Option<u32> = None;
     let mut counter: Vec<i32> = Vec::new();
@@ -73,8 +73,8 @@ pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
             tie_breaker: 0,
         },
     );
-    let part2 = (oxygen_generator_rating * c02_scrubber_rating) as i32;
-    return Ok((part1 as i32, part2));
+    let part2 = (oxygen_generator_rating * c02_scrubber_rating) as i64;
+    return Ok((part1 as i64, part2));
 }
 
 struct RatingConfig {

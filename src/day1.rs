@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn solve(file_input: File) -> Result<(i32, i32), &'static str> {
+pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     let mut reader = BufReader::new(file_input);
 
     let mut result1 = 0;
