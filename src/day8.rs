@@ -1,4 +1,3 @@
-use std::convert::TryInto;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -8,8 +7,6 @@ struct SevenSegmentDisplay {
     segments: [bool; 7],
     lit_segment_count: u32,
 }
-
-// type SevenSegmentDisplay = [bool; 7];
 
 impl SevenSegmentDisplay {
     fn new() -> Self {
@@ -33,33 +30,6 @@ impl SevenSegmentDisplayCollection {
         }
     }
 }
-
-// #[derive(Copy, Clone)]
-// struct UnknownSegment {
-//     possible_segments: SevenSegmentDisplay,
-//     options_remaining: u32,
-// }
-
-// impl UnknownSegment {
-//     fn new() -> Self {
-//         Self {
-//             possible_segments: [true; 7],
-//             options_remaining: 7,
-//         }
-//     }
-// }
-
-// struct PossibilityMap([UnknownSegment; 7]);
-// impl PossibilityMap {
-//     fn new() -> Self {
-//         Self([UnknownSegment::new(); 7])
-//     }
-
-//     fn is_solved(&self) -> bool {
-//         false
-//     }
-// }
-// segments:
 
 //   0:      1:      2:      3:      4:
 //  aaaa    ....    aaaa    aaaa    ....
@@ -85,7 +55,7 @@ impl SevenSegmentDisplayCollection {
 //  e appears 4 times
 //  f appears 9 times
 //  g appears 7 times
-// [4, 6, 7, 7, 8, 8, 9]
+
 pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     let mut reader = BufReader::new(file_input);
     let mut line = String::new();
@@ -125,6 +95,7 @@ pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
     .collect();
 
     let mut part1 = 0i64;
+    let mut part2 = 0i64;
     for collection in collections.iter() {
         let mut segment_counts = [0u32; 7];
         for display in collection.displays.iter() {
@@ -134,7 +105,6 @@ pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
                 }
             }
         }
-        println!("Segment counts: {:?}", segment_counts);
 
         let b = get_segment_by_count(&segment_counts, |_, count| count == 6);
         let e = get_segment_by_count(&segment_counts, |_, count| count == 4);
@@ -162,12 +132,10 @@ pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
 
         let g = (6 + 5 + 4 + 3 + 2 + 1 + 0) - (a + b + c + d + e + f);
 
-        println!(
-            "a = {}, b = {}, c = {}, d = {}, e = {}, f = {}, g = {}",
-            a, b, c, d, e, f, g
-        );
-
         let remap = [a, b, c, d, e, f, g];
+        let mut multiplier = 10i64.pow(collection.to_decipher.len() as u32 - 1);
+        let mut solution: i64 = 0;
+
         for to_solve in collection.to_decipher {
             let lit_segment_count = to_solve.lit_segment_count;
             if lit_segment_count == 7
@@ -184,34 +152,13 @@ pub fn solve(file_input: File) -> Result<(i64, i64), &'static str> {
                         continue 'next_number;
                     }
                 }
-                println!("Found number {}", number);
+                solution += number as i64 * multiplier;
+                multiplier /= 10;
             }
         }
+        part2 += solution;
     }
 
-    // for collection in collections.iter() {
-    //     for display in collection.displays.iter() {
-    //         for (character, segment) in display.segments.iter().enumerate() {
-    //             if *segment {
-    //                 print!("{}", char::from_u32(character as u32 + 'a' as u32).unwrap());
-    //             }
-    //         }
-    //         print!(" ");
-    //     }
-    //     print!("| ");
-    //     for display in collection.to_decipher.iter() {
-    //         for (character, segment) in display.segments.iter().enumerate() {
-    //             if *segment {
-    //                 print!("{}", char::from_u32(character as u32 + 'a' as u32).unwrap());
-    //             }
-    //         }
-    //         print!(" ");
-    //     }
-
-    //     println!("");
-    // }
-
-    let part2 = 0i64;
     Ok((part1, part2))
 }
 
