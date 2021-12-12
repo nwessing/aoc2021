@@ -1,4 +1,6 @@
 mod day1;
+mod day11;
+mod day12;
 mod day2;
 mod day3;
 mod day4;
@@ -19,7 +21,7 @@ fn main() -> Result<(), &'static str> {
         .nth(1)
         .ok_or("What day would you like to run?")?;
 
-    let is_sample = env::args().nth(2).unwrap_or_default() == "sample";
+    let input_override = env::args().nth(2);
 
     let solutions: BTreeMap<&str, SolverFunc> = BTreeMap::from([
         ("day1", day1::solve as SolverFunc),
@@ -30,12 +32,14 @@ fn main() -> Result<(), &'static str> {
         ("day6", day6::solve),
         ("day7", day7::solve),
         ("day8", day8::solve),
+        ("day11", day11::solve),
+        ("day12", day12::solve),
     ]);
 
     if day.as_str() == "all" {
         let mut total_runtime = Duration::new(0, 0);
         for (day, func) in solutions.iter() {
-            let result = run_day(&day, is_sample, func)?;
+            let result = run_day(&day, input_override.as_ref(), func)?;
             println!("{} ({:?}) ", day, result.2);
             println!("  Part 1: {}", result.0);
             println!("  Part 2: {}", result.1);
@@ -45,7 +49,7 @@ fn main() -> Result<(), &'static str> {
     } else {
         let func = solutions.get(day.as_str()).ok_or("Unimplemented day")?;
 
-        let result = run_day(&day, is_sample, func)?;
+        let result = run_day(&day, input_override.as_ref(), func)?;
 
         println!("Part 1: {}", result.0);
         println!("Part 2: {}", result.1);
@@ -57,11 +61,11 @@ fn main() -> Result<(), &'static str> {
 
 fn run_day(
     day: &str,
-    is_sample: bool,
+    input_override: Option<&String>,
     func: &SolverFunc,
 ) -> Result<(i64, i64, Duration), &'static str> {
-    let filename = if is_sample {
-        format!("input/{}_sample", day)
+    let filename = if let Some(input_override) = input_override {
+        format!("input/{}_{}", day, input_override)
     } else {
         format!("input/{}", day)
     };
