@@ -2,6 +2,7 @@ mod day1;
 mod day11;
 mod day12;
 mod day13;
+mod day16;
 mod day2;
 mod day3;
 mod day4;
@@ -36,6 +37,7 @@ fn main() -> Result<(), &'static str> {
         ("day11", day11::solve),
         ("day12", day12::solve),
         ("day13", day13::solve),
+        ("day16", day16::solve),
     ]);
 
     if day.as_str() == "all" {
